@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>AI Radar · Saved</title>
+<style>
+:root { --bg:#000; --ink:#f5f5f7; --ink2:#a1a1a6; --card:#1c1c1e; --line:#2c2c2e; --accent:#2997ff; color-scheme: dark; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.45 -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+main { max-width:720px; margin:0 auto; padding:max(12px, env(safe-area-inset-top)) 16px 48px; }
+h1 { font-size:22px; margin:6px 0 2px; } .sub { color:var(--ink2); font-size:13px; margin:0 0 14px; } .sub a { color:var(--accent); text-decoration:none; }
+.item { background:var(--card); border-radius:14px; overflow:hidden; margin:0 0 12px; }
+.th { position:relative; aspect-ratio:16/9; background:#111; cursor:pointer; border:0; padding:0; display:block; width:100%; color:inherit; }
+.th img { width:100%; height:100%; object-fit:cover; display:block; }
+.dur { position:absolute; right:6px; bottom:6px; background:rgba(0,0,0,.8); border-radius:5px; padding:1px 6px; font-size:12px; font-weight:600; }
+.play { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:38px; background:rgba(0,0,0,.25); }
+.tx { padding:10px 12px 4px; } .tx b { font-size:15.5px; line-height:1.3; display:block; } .tx span { color:var(--ink2); font-size:13px; }
+.btns { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; padding:10px 12px 12px; }
+.btns button, .btns a { border:0; border-radius:10px; padding:10px 6px; font:600 14px -apple-system, sans-serif; text-align:center; text-decoration:none; background:#2c2c2e; color:var(--ink); cursor:pointer; }
+.btns a { background:var(--ink); color:#000; }
+.empty { color:var(--ink2); padding:30px 0; text-align:center; }
+#modal { position:fixed; inset:0; background:rgba(0,0,0,.88); z-index:20; display:none; align-items:center; justify-content:center; padding:12px; }
+#modal.on { display:flex; } .box { width:min(900px, 100%); }
+.stage { position:relative; aspect-ratio:16/9; background:#111; border-radius:12px; overflow:hidden; }
+.stage iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+.mt { font-size:16px; font-weight:600; margin:10px 0 10px; }
+.mb { display:flex; gap:8px; } .mb a, .mb button { flex:1; border:0; border-radius:12px; padding:12px 8px; font:600 15px -apple-system, sans-serif; text-align:center; text-decoration:none; background:var(--card); color:var(--ink); cursor:pointer; } .mb a { background:var(--ink); color:#000; }
+footer { color:var(--ink2); font-size:12px; margin-top:24px; }
+</style></head>
+<body><main>
+<h1>Saved for later</h1>
+<p class="sub"><a href="../">Reel</a> · <a href="../all/">All videos</a> · <a href="../archive/">Archive</a></p>
+<div id="list"></div>
+<footer>Saved on this device and browser only (nothing is uploaded) and removed after 30 days. Use the same browser each time: your list in Safari and in Chrome are separate.</footer>
+</main>
+<div id="modal"><div class="box"><div class="stage" id="stage"></div><p class="mt" id="mt"></p>
+<div class="mb"><a id="app" target="_blank" rel="noopener">YouTube app ↗</a><button id="close">Close</button></div></div></div>
+<script>
+
+var Saved = (function () {
+  var KEY = "airadar.saved.v1", MAX_AGE = 30 * 86400000;
+  function load() {
+    try { var now = Date.now(); return JSON.parse(localStorage.getItem(KEY) || "[]").filter(function (x) { return now - x.savedAt < MAX_AGE; }); }
+    catch (e) { return []; }
+  }
+  function store(a) { try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) {} }
+  function has(id) { return load().some(function (x) { return x.id === id; }); }
+  function paint() {
+    var n = load().length;
+    [].forEach.call(document.querySelectorAll(".sn"), function (el) { el.textContent = n ? "(" + n + ")" : ""; });
+  }
+  return {
+    all: load, has: has, paint: paint,
+    toggle: function (v) {   // returns true when the video is saved afterwards
+      var a = load(), i = a.findIndex(function (x) { return x.id === v.id; });
+      if (i >= 0) a.splice(i, 1);
+      else a.unshift({ id: v.id, title: v.title, channel: v.channel, views: v.views, duration: v.duration,
+                       start: v.start || 0, embed: v.embed !== false, savedAt: Date.now() });
+      store(a); paint();
+      var ok = has(v.id) === (i < 0);
+      if (!ok) alert("Can't save here: the browser blocks storage (private mode?).");
+      return has(v.id);
+    }
+  };
+})();
+
+function $(id) { return document.getElementById(id); }
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+function link(v) { return "https://youtu.be/" + v.id + (v.start ? "?t=" + v.start : ""); }
+function render() {
+  var a = Saved.all();
+  $("list").innerHTML = a.length ? a.map(function (v) {
+    return '<div class="item"><button class="th" data-play="' + v.id + '"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/mqdefault.jpg">' +
+      (v.duration ? '<span class="dur">' + esc(v.duration) + '</span>' : "") + '<span class="play">▶</span></button>' +
+      '<div class="tx"><b>' + esc(v.title) + '</b><span>' + esc(v.channel) + '</span></div>' +
+      '<div class="btns"><button data-play="' + v.id + '">▶ Play</button><a href="' + link(v) + '" target="_blank" rel="noopener">YouTube app ↗</a>' +
+      '<button data-rm="' + v.id + '">✓ Done</button></div></div>';
+  }).join("") : '<p class="empty">Nothing saved yet. Tap ☆ on a clip in the reel or on a video in All videos.</p>';
+  Saved.paint();
+}
+function play(id) {
+  var v = Saved.all().find(function (x) { return x.id === id; }); if (!v) return;
+  if (!v.embed) { window.open(link(v), "_blank", "noopener"); return; }
+  $("stage").innerHTML = '<iframe allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen src="https://www.youtube.com/embed/' + id +
+    '?autoplay=1&playsinline=1&rel=0&modestbranding=1' + (v.start ? "&start=" + v.start : "") + '"></iframe>';
+  $("mt").textContent = v.title; $("app").href = link(v); $("modal").classList.add("on");
+}
+function close() { $("modal").classList.remove("on"); $("stage").innerHTML = ""; }
+$("list").onclick = function (e) {
+  var p = e.target.closest("[data-play]"), r = e.target.closest("[data-rm]");
+  if (p) play(p.dataset.play);
+  else if (r) { var v = Saved.all().find(function (x) { return x.id === r.dataset.rm; }); if (v) { Saved.toggle(v); render(); } }
+};
+$("close").onclick = close;
+$("modal").onclick = function (e) { if (e.target === $("modal")) close(); };
+document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
+render();
+</script>
+</body></html>

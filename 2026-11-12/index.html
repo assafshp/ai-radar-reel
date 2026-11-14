@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>AI Highlight Reel 2026-11-12</title>
+<style>
+:root { --bg:#000; --ink:#f5f5f7; --ink2:#a1a1a6; --card:#1c1c1e; --accent:#2997ff; color-scheme: dark; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.45 -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+main { max-width:720px; margin:0 auto; padding:max(12px, env(safe-area-inset-top)) 16px 40px; }
+h1 { font-size:22px; margin:6px 0 2px; letter-spacing:-.01em; }
+.sub { color:var(--ink2); font-size:13px; margin:0 0 12px; }
+.sub a { color:var(--accent); text-decoration:none; }
+.when { font-size:17px; font-weight:600; margin:0 0 4px; }
+.stage { position:relative; aspect-ratio:16/9; background:#111; border-radius:14px; overflow:hidden; }
+#player, .stage iframe { position:absolute; inset:0; width:100%; height:100%; }
+.start { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
+  background:rgba(0,0,0,.6); border:0; color:#fff; font:600 18px -apple-system, sans-serif; cursor:pointer; z-index:2; }
+.start span { font-size:56px; line-height:1; }
+.bar { display:flex; gap:4px; margin:10px 0; }
+.bar i { flex:1; height:4px; border-radius:2px; background:#3a3a3c; }
+.bar i.done { background:var(--ink2); } .bar i.on { background:var(--ink); }
+.why { font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink2); font-weight:600; }
+h2 { font-size:18px; line-height:1.3; margin:2px 0 4px; }
+.meta { color:var(--ink2); font-size:13.5px; margin:0 0 12px; }
+.ctrl { display:grid; grid-template-columns:1fr 1fr 1.4fr; gap:8px; }
+.ctrl button, .ctrl a { border:0; border-radius:12px; padding:12px 8px; font:600 15px -apple-system, sans-serif; text-align:center;
+  background:var(--card); color:var(--ink); text-decoration:none; cursor:pointer; }
+.ctrl a { background:var(--ink); color:#000; }
+ol { padding:0; list-style:none; margin:20px 0 0; }
+li { display:grid; grid-template-columns:22px 1fr 30px; gap:8px; padding:10px 0; border-top:1px solid #2c2c2e; font-size:14px; cursor:pointer; }
+li.on { color:var(--accent); } li small { color:var(--ink2); display:block; }
+footer { color:var(--ink2); font-size:12px; margin-top:20px; }
+.note { color:#ffd60a; font-size:13px; min-height:1em; }
+.hint { color:var(--ink2); font-size:12.5px; margin:8px 0 0; }
+.all { display:block; margin:8px 0 0; padding:12px 8px; border-radius:12px; background:#ff0033; color:#fff;
+  font:600 15px -apple-system, sans-serif; text-align:center; text-decoration:none; }
+.clips { background:var(--ink); color:#000; }
+.savebtn { display:block; width:100%; border:0; border-radius:12px; padding:11px 8px; margin:0 0 8px; background:var(--card); color:var(--ink); font:600 15px -apple-system, sans-serif; cursor:pointer; }
+.savebtn.on { color:#ffd60a; }
+li .star { text-align:right; font-style:normal; font-size:18px; padding-left:6px; }
+li .star.on { color:#ffd60a; }
+.browse { background:var(--card); margin:18px 0 0; }
+.stale { background:#ffd60a; color:#000; border-radius:10px; padding:10px 12px; font-size:15px; font-weight:600; margin:0 0 10px; }
+</style></head>
+<body><main>
+<h1>AI Highlight Reel</h1>
+<p class="when">📅 Thu 12 Nov 2026, 14:31 (Israel time)</p>
+<p class="sub">10 clips · ~15 min · plays on YouTube · <a href="../">Today</a> · <a href="../archive/">Archive</a> · <a href="../run/">Run</a> · <a href="../saved/">Saved <span class="sn"></span></a></p>
+<p class="stale" id="stale" hidden></p>
+<div class="stage"><div id="player"></div><button class="start" id="start"><span>▶</span>Play reel</button></div>
+<div class="bar" id="bar"></div>
+<div class="why" id="why"></div>
+<h2 id="title"></h2>
+<p class="meta" id="meta"></p>
+<p class="note" id="note"></p>
+<button class="savebtn" id="save">☆ Save for later</button>
+<div class="ctrl"><button id="prev">◀︎ Prev</button><button id="next">Next ▶︎</button><a id="full" target="_blank" rel="noopener">YouTube app ↗</a></div>
+<a class="all clips" id="clips" target="_blank" rel="noopener"></a>
+<a class="all" id="all" target="_blank" rel="noopener">▶ Play all in YouTube app (full videos)</a>
+<p class="hint">Ads here? Safari hides your Premium login from embedded players. Open this page in Chrome signed in to YouTube (no ads there in testing), or use the app buttons. “YouTube app” opens this clip at the same moment, ad-free with Premium; come back and tap Next. “Clips in app” does the same clip by clip: when you return here, the next clip is ready. “Play all” opens every video as a temporary playlist in the app (full videos, no clip start points).</p>
+<ol id="list"></ol>
+<a class="all browse" href="all/">Browse all 146 videos reviewed today ›</a>
+<footer>Clips start at the creator's chapter that best matches AI topics and play in YouTube's player. Views are official counts at scan time.</footer>
+</main>
+<script id="data" type="application/json">[{"id": "p85Gfa-z07A", "title": "Did Jensen Huang Just Destroy America's AI Advantage? | Great Question", "channel": "CBS Evening News", "reason": "Leader · Jensen Huang", "views": 37918, "duration": "42:50", "start": 78, "end": 168, "label": "Did Jensen Huang Just Destroy America's AI Advantage?", "range": "1:18–2:48"}, {"id": "HEfo_TvhvN4", "title": "Elon Musk’s Grok AI Was Asked “When Will the Rapture Happen?” — What It Revealed Was Terrifying", "channel": "TheOminiChronicle", "reason": "Leader · Elon Musk", "views": 19231, "duration": "30:25", "start": 0, "end": 90, "label": "From the start", "range": "0:00–1:30"}, {"id": "evQcbeOlvWc", "title": "Jensen Huang on Leading Nvidia, Developing a Flat Management Style, and Keeping Humans in the Loop", "channel": "Harvard Business Review", "reason": "Strategy · Harvard Business Review", "views": 13136, "duration": "26:25", "start": 0, "end": 90, "label": "From the start", "range": "0:00–1:30"}, {"id": "LI3lxzHfRrU", "title": "Mike Volpi on Why AI Infrastructure Will Outlast the Hype Cycle", "channel": "a16z", "reason": "Strategy · a16z", "views": 10591, "duration": "56:06", "start": 53, "end": 143, "label": "The internet buildout vs. the AI buildout", "range": "0:53–2:23"}, {"id": "ZZ19zhYnDKY", "title": "AIE CODE: Google DeepMind, Anthropic, SpaceXSI, TypeSafe, Lovable, Ramp, etc (System One theme)", "channel": "AI Engineer", "reason": "Watchlist · AI Engineer", "views": 55460, "duration": "8:58:20", "start": 0, "end": 90, "label": "From the start", "range": "0:00–1:30"}, {"id": "uND6iY2qp_c", "title": "AlphaGenome 2: Teaching AI to read the entire human genome", "channel": "Google DeepMind", "reason": "Watchlist · Google DeepMind", "views": 38101, "duration": "39:47", "start": 241, "end": 331, "label": "Genotype, Phenotype & DNA", "range": "4:01–5:31"}, {"id": "2_z9c-6AOSc", "title": "Mariko Mori's world of radiant light", "channel": "Claude", "reason": "Watchlist · Claude", "views": 36429, "duration": "1:59", "start": 0, "end": 90, "label": "From the start", "range": "0:00–1:30"}, {"id": "hUhr0JiVZZs", "title": "How to run your first Codex Security scan", "channel": "OpenAI", "reason": "Watchlist · OpenAI", "views": 15950, "duration": "6:48", "start": 0, "end": 90, "label": "From the start", "range": "0:00–1:30"}, {"id": "9hXlMbSMHeU", "title": "The AI Bubble Just Claimed Its First Victim", "channel": "MonkeyExplains", "reason": "Most viewed", "views": 803117, "duration": "15:50", "start": 0, "end": 90, "label": "From the start", "range": "0:00–1:30"}, {"id": "DvOxaT_hCmc", "title": "The Economics of AI Don’t Add Up", "channel": "Sabine Hossenfelder", "reason": "Most viewed", "views": 222192, "duration": "8:03", "start": 0, "end": 90, "label": "From the start", "range": "0:00–1:30"}]</script>
+<script>
+
+var Saved = (function () {
+  var KEY = "airadar.saved.v1", MAX_AGE = 30 * 86400000;
+  function load() {
+    try { var now = Date.now(); return JSON.parse(localStorage.getItem(KEY) || "[]").filter(function (x) { return now - x.savedAt < MAX_AGE; }); }
+    catch (e) { return []; }
+  }
+  function store(a) { try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) {} }
+  function has(id) { return load().some(function (x) { return x.id === id; }); }
+  function paint() {
+    var n = load().length;
+    [].forEach.call(document.querySelectorAll(".sn"), function (el) { el.textContent = n ? "(" + n + ")" : ""; });
+  }
+  return {
+    all: load, has: has, paint: paint,
+    toggle: function (v) {   // returns true when the video is saved afterwards
+      var a = load(), i = a.findIndex(function (x) { return x.id === v.id; });
+      if (i >= 0) a.splice(i, 1);
+      else a.unshift({ id: v.id, title: v.title, channel: v.channel, views: v.views, duration: v.duration,
+                       start: v.start || 0, embed: v.embed !== false, savedAt: Date.now() });
+      store(a); paint();
+      var ok = has(v.id) === (i < 0);
+      if (!ok) alert("Can't save here: the browser blocks storage (private mode?).");
+      return has(v.id);
+    }
+  };
+})();
+
+var ITEMS = JSON.parse(document.getElementById("data").textContent), idx = 0, player = null, ready = false, seeked = false;
+function $(id) { return document.getElementById(id); }
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+function render() {
+  var it = ITEMS[idx];
+  $("bar").innerHTML = ITEMS.map(function (_, i) { return '<i class="' + (i < idx ? "done" : i === idx ? "on" : "") + '"></i>'; }).join("");
+  $("why").textContent = (idx + 1) + "/" + ITEMS.length + " · " + it.reason;
+  $("title").textContent = it.title;
+  $("meta").textContent = it.channel + " · " + (it.views == null ? "" : it.views.toLocaleString("en-US") + " views · ") + "clip " + it.range + " · " + it.label;
+  $("full").href = "https://youtu.be/" + it.id + "?t=" + it.start;
+  $("clips").href = $("full").href;
+  var sv = Saved.has(it.id); $("save").textContent = sv ? "★ Saved. Tap to remove" : "☆ Save for later"; $("save").classList.toggle("on", sv);
+  $("clips").textContent = "▶ Clips in app · " + (idx + 1) + "/" + ITEMS.length + " (ad-free, from the highlight)";
+  $("list").innerHTML = ITEMS.map(function (x, i) {
+    return '<li data-i="' + i + '" class="' + (i === idx ? "on" : "") + '"><b>' + (i + 1) + '</b><span>' + esc(x.title) + '<small>' + esc(x.channel) + " · " + x.range + '</small></span><em class="star' + (Saved.has(x.id) ? " on" : "") + '" data-s="' + i + '">' + (Saved.has(x.id) ? "★" : "☆") + '</em></li>';
+  }).join("");
+}
+function play(i) {
+  if (i < 0 || i >= ITEMS.length) return;
+  idx = i; seeked = false; $("note").textContent = ""; render();
+  if (ready) player.loadVideoById({ videoId: ITEMS[idx].id, startSeconds: ITEMS[idx].start, endSeconds: ITEMS[idx].end });
+}
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player("player", {
+    videoId: ITEMS[0].id,
+    playerVars: { playsinline: 1, rel: 0, modestbranding: 1, start: ITEMS[0].start, end: ITEMS[0].end },
+    events: {
+      onReady: function () { ready = true; },
+      onStateChange: function (e) {
+        // startSeconds is not always honoured on loadVideoById: enforce the clip start ourselves
+        // (re)apply until the clip window is actually reached; ads may report PLAYING first
+        if (e.data === YT.PlayerState.PLAYING && !seeked && Math.abs(player.getCurrentTime() - ITEMS[idx].start) > 3)
+          player.seekTo(ITEMS[idx].start, true);
+        if (e.data === YT.PlayerState.ENDED) next();
+      },
+      onError: function () { $("note").textContent = "This clip can't play here; skipping. Use “Watch full”."; setTimeout(function () { play(idx + 1); }, 2500); }
+    }
+  });
+}
+var advancing = false;
+function next() {
+  if (advancing) return;
+  advancing = true; setTimeout(function () { advancing = false; }, 1500);
+  if (idx < ITEMS.length - 1) play(idx + 1); else { player.pauseVideo(); $("note").textContent = "That's today's reel."; }
+}
+// enforce the clip end ourselves (endSeconds is ignored in some players)
+setInterval(function () {
+  if (!ready || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
+  var t = player.getCurrentTime(), it = ITEMS[idx];
+  if (!seeked) { if (t >= it.start - 1 && t <= it.end) seeked = true; return; }   // clip reached
+  if (t >= it.end) next();   // during a mid-roll ad t is the ad's time, so no false advance
+}, 500);
+$("start").onclick = function () {
+  $("start").remove();
+  if (!ready) return;
+  player.playVideo();   // iOS may still require a tap on the video itself the first time
+  setTimeout(function () { if (player.getPlayerState() !== YT.PlayerState.PLAYING) $("note").textContent = "Tap the video to start — the rest of the reel then plays on its own."; }, 1500);
+};
+$("prev").onclick = function () { play(idx - 1); };
+$("next").onclick = function () { next(); };
+$("save").onclick = function () { if (ITEMS.length) { Saved.toggle(ITEMS[idx]); render(); } };
+$("list").onclick = function (e) {
+  var st = e.target.closest(".star");
+  if (st) { Saved.toggle(ITEMS[+st.dataset.s]); render(); return; }
+  var li = e.target.closest("li"); if (li) { var s = $("start"); if (s) s.remove(); play(+li.dataset.i); } };
+// Clips in app: each tap opens the current clip in the YouTube app (Premium applies there);
+// coming back to this page moves on to the next clip, cued but not playing here
+var appMode = false, away = false;
+$("clips").onclick = function () {
+  appMode = true; away = false;
+  var s = $("start"); if (s) s.remove();
+  if (ready) player.pauseVideo();
+};
+document.addEventListener("visibilitychange", function () {
+  if (!appMode) return;
+  if (document.visibilityState === "hidden") { away = true; return; }
+  if (!away) return;
+  away = false;
+  if (idx >= ITEMS.length - 1) { appMode = false; $("note").textContent = "That's today's reel."; return; }
+  idx += 1; seeked = false; $("note").textContent = ""; render();
+  if (ready) player.cueVideoById({ videoId: ITEMS[idx].id, startSeconds: ITEMS[idx].start, endSeconds: ITEMS[idx].end });
+});
+// YouTube's own temporary-playlist link: opens in the app, where Premium applies
+if (ITEMS.length) $("all").href = "https://www.youtube.com/watch_videos?video_ids=" + ITEMS.map(function (x) { return x.id; }).join(",");
+else $("all").hidden = $("clips").hidden = true;
+if (ITEMS.length) render(); else $("title").textContent = "No clips today.";
+Saved.paint();
+(function () {   // warn when the morning run did not refresh the reel
+  var d = new Date(), today = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  if (!true && "2026-11-12" !== today) { $("stale").hidden = false; $("stale").textContent = "⚠️ This is NOT today's reel. The data is from 2026-11-12; today's update hasn't arrived yet."; }
+})();
+</script>
+<script src="https://www.youtube.com/iframe_api"></script>
+</body></html>
